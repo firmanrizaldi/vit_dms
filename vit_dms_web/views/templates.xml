@@ -1,0 +1,214 @@
+<openerp>
+    <data>
+        <template id="vit_dms_web.index" name="index">
+            <t t-call="website.layout">
+                <h2>Document Management Systems</h2>
+                <p>View, Read, Review</p>
+                <div style="margin:20px 0;"></div>
+                <div class="easyui-layout" style="width:100%;height:1000px;">
+
+                    <div data-options="region:'west',split:true" title="File Browser" style="width:30%;">
+                        <t t-call="vit_dms_web.file_browser"/>
+                    </div>
+
+                    <div data-options="region:'center',title:'Document',iconCls:'icon-ok'">
+                        <t t-call="vit_dms_web.file_preview"/>
+                        <t t-call="vit_dms_web.file_review"/>
+                    </div>
+
+                    <!--<div data-options="region:'east',split:true" title="Info" style="width:200px;">-->
+                        <!--<t t-call="vit_dms_web.file_metadata"/>-->
+                    <!--</div>-->
+                </div>
+                <script>
+                    var selectedFileId=null;
+                </script>
+            </t>
+         </template>
+
+        <template id="vit_dms_web.file_browser">
+             <table id="tt" class="easyui-treegrid" style="width:100%;height:auto"
+                    data-options="
+                        url: '/vit_dms_web/directories',
+                        method: 'get',
+                        rownumbers: true,
+                        idField: 'id',
+                        treeField: 'name',
+                        onClickRow: onClickRow
+                    ">
+                 <thead>
+                     <tr>
+                        <th data-options="field:'name'" width="220">Name</th>
+                        <th data-options="field:'size'" width="100" align="right">Size</th>
+                        <th data-options="field:'file_state'" width="150">State</th>
+                     </tr>
+                 </thead>
+             </table>
+             <script>
+                 function onClickRow(node){
+                    selectedFileId = node.id;
+                     
+                    $('iframe').each(function() {
+                      this.contentWindow.location.reload(true);
+                    });
+
+                    $('#dg_review').edatagrid({
+                        url: '/vit_dms_web/reviews/read/' + node.id,
+                        saveUrl: '/vit_dms_web/reviews/create/' + node.id,
+                        updateUrl: '/vit_dms_web/reviews/update/' + node.id,
+                        destroyUrl: '/vit_dms_web/reviews/delete/' + node.id
+                    });
+                    $('#dg_info').edatagrid({
+                        url: '/vit_dms_web/infos/read/' + node.id,
+                        saveUrl: '/vit_dms_web/infos/create/' + node.id,
+                        updateUrl: '/vit_dms_web/infos/update/' + node.id,
+                        destroyUrl: '/vit_dms_web/infos/delete/' + node.id
+                    });
+                    $('#dg_reviewer').datagrid({
+                        url: '/vit_dms_web/reviewers/read/' + node.id
+                    });
+
+                    var src = '/vit_dms_web/static/src/js/ViewerJS/index.html#/web/content?model=muk_dms.file&amp;field=content&amp;id=' + node.id ;
+                    $('#viewer').attr('src', src);
+                 }
+             </script>
+         </template>
+
+        <template id="vit_dms_web.file_preview">
+            <iframe id="viewer" src="" width='100%' height='500' allowfullscreen="1" webkitallowfullscreen="1"></iframe>
+        </template>
+
+        <template id="vit_dms_web.file_review">
+            <div class="easyui-tabs" style="width:100%;height:300px">
+
+                <div title="Reviews" style="padding:10px">
+                    <t t-call="vit_dms_web.tab_review"  />
+                </div>
+
+                <div title="Reviewers" style="padding:10px">
+                    <t t-call="vit_dms_web.tab_reviewer"  />
+                </div>
+
+                <div title="Info" data-options="iconCls:'icon-help'" style="padding:10px">
+                    <t t-call="vit_dms_web.tab_infos"/>
+                </div>
+
+            </div>
+        </template>
+
+        <template id="vit_dms_web.file_metadata">
+            meta data
+        </template>
+
+        <template id="vit_dms_web.tab_review">
+            <table id="dg_review" style="width:100%;height:250px" toolbar="#toolbar" pagination="true" idField="id" rownumbers="true" fitColumns="true" singleSelect="true">
+                <thead>
+                    <tr>
+                        <th field="tanggal_jam" width="150">Tanggal</th>
+                        <th field="name" width="150" editor="{type:'validatebox',options:{required:true}}">Bookmark</th>
+                        <th field="redaksi_asal" width="150" editor="{type:'validatebox',options:{required:true}}">Redaksi Asal</th>
+                        <th field="ulas" width="150" editor="{type:'validatebox',options:{required:true}}">Ulasan</th>
+                        <th field="state" width="100" >State</th>
+                    </tr>
+                </thead>
+            </table>
+            <div id="toolbar">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#dg_review').edatagrid('addRow')">New</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dg_review').edatagrid('destroyRow')">Destroy</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#dg_review').edatagrid('saveRow')">Save</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#dg_review').edatagrid('cancelRow')">Cancel</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="javascript:action_review_done()">Done</a>
+            </div>
+            <script type="text/javascript">
+                $(function(){
+                    $('#dg_review').edatagrid({
+
+                    });
+                });
+
+                function action_review_done(){
+                    if (selectedFileId){
+                        $.messager.confirm('Confirm','Are you sure you want end this review?',function(r){
+                            if (r){
+                                $.post('/vit_dms_web/reviews/done/'+selectedFileId,function(result){
+                                    if (result.success){
+                                        $('#dg_review').datagrid('reload');    // reload the review grid
+                                        $('#tt').treegrid('reload');    // reload the file browser
+                                    } else {
+                                        $.messager.show({    // show error message
+                                            title: 'Error',
+                                            msg: result.errorMsg
+                                        });
+                                    }
+                                },'json');
+                            }
+                        });
+                    }
+                }
+            </script>
+        </template>
+
+        <template id="vit_dms_web.tab_infos">
+            <table id="dg_info" style="width:100%;height:250px" toolbar="#toolbar_info" pagination="true" idField="id" rownumbers="true" fitColumns="true" singleSelect="true">
+                <thead>
+                    <tr>
+                        <th field="name" width="50" editor="{type:'validatebox',options:{required:true}}">Nomor Naskah</th>
+                        <th field="tanggal_naskah" width="50">Tanggal Naskah</th>
+                        <th field="partner" width="50"
+                            data-options="
+                                formatter: function(value,row){
+                                    if (row.partner)
+                                        return row.partner[1];
+                                    else
+                                        return '';
+                                },
+                                editor:{
+                                    type:'combobox',
+                                    options:{
+                                        valueField:'id',
+                                        textField:'name',
+                                        method:'get',
+                                        url:'/vit_dms_web/partner',
+                                        required:true
+                                    }
+                                }
+                            ">Partner</th>
+                        <th field="deskripsi" width="50" editor="{type:'validatebox',options:{required:true}}">Deskripsi</th>
+                    </tr>
+                </thead>
+            </table>
+            <div id="toolbar_info">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#dg_info').edatagrid('addRow')">New</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dg_info').edatagrid('destroyRow')">Destroy</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#dg_info').edatagrid('saveRow')">Save</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#dg_info').edatagrid('cancelRow')">Cancel</a>
+            </div>
+            <script type="text/javascript">
+                $(function(){
+                    $('#dg_info').edatagrid({
+                    });
+                });
+            </script>
+        </template>
+
+        <template id="vit_dms_web.tab_reviewer">
+            <table id="dg_reviewer" class="easyui-datagrid" style="width:100%;height:250px" data-options="singleSelect:true,collapsible:true,url:'',method:'get'">
+                <thead>
+                    <tr>
+                        <th data-options="field:'name'">Reviewer</th>
+                        <th data-options="field:'state',width:100">Status</th>
+                    </tr>
+                </thead>
+            </table>
+            <script type="text/javascript">
+                $(function(){
+                    $('#dg_reviewer').datagrid({
+
+                    });
+                });
+            </script>
+        </template>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<odoo>
+    <data>
+        <template id="vit_dms_web_frontend" name="vit_dms_web web assets frontent" inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+
+                <link rel="stylesheet" type="text/css" href="/vit_dms_web/static/src/css/themes/default/easyui.css"/>
+                <!-- <link rel="stylesheet" type="text/css" href="/vit_dms_web/static/src/css/themes/material/easyui.css"/> -->
+                <link rel="stylesheet" type="text/css" href="/vit_dms_web/static/src/css/themes/icon.css" />
+
+                <script type="text/javascript" src="/vit_dms_web/static/src/js/jquery.easyui.min.js"></script>
+                <script type="text/javascript" src="/vit_dms_web/static/src/js/jquery.edatagrid.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

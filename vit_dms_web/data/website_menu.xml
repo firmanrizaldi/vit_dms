@@ -1,0 +1,13 @@
+<odoo>
+	<data>
+		
+		<record id="menu_dms" model="website.menu">            
+			<field name="name">DMS</field>            
+			<field name="url" eval="'/vit_dms_web/index'"/>            
+			<field name="parent_id" ref="website.main_menu"/>            
+			<field name="sequence" type="int">40</field>            
+			<field name="website_id" ref="website.default_website"/>        
+		</record>
+		
+	</data>
+</odoo>

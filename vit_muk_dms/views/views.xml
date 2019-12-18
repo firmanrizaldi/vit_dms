@@ -1,0 +1,60 @@
+<odoo>
+	<data>
+		<!-- inherit -->
+		<record model="ir.ui.view" id="muk_dms_list">
+			<field name="name">muk_dms_list</field>
+			<field name="model">muk_dms.file</field>
+			<field name="inherit_id" ref="muk_dms.view_dms_file_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//button[last()]" position="inside">
+					<button name="action_done" type="object" class="oe_highlight" string="Create" states="draft"/>
+					<field name="state" widget="statusbar" />
+				</xpath>
+				<field name="mimetype" position="after">
+					<field name="name"/>
+					<field name="tanggal"/>
+					<!--<field name="status"/>-->
+				</field>
+				<xpath expr="//notebook[last()]" position="inside">
+					<page string="Review">
+						<field name="review_ids">
+							<tree>
+								<field name="name"/>
+								<field name="tanggal_jam"/>
+								<field name="redaksi_asal"/>
+								<field name="ulas"/>
+								<field name="user_id"/>
+								<field name="state"/>
+							</tree>
+						</field>
+					</page>
+				</xpath>
+				<xpath expr="//notebook[last()]" position="inside">
+					<page string="Reviewer">
+						<field name="reviewer_ids">
+							<tree string="Reviewers">
+								<field name="name"/>
+								<field name="state"/>
+
+							</tree>
+						</field>
+					</page>
+				</xpath>
+				<xpath expr="//notebook[last()]" position="inside">
+					<page string="Info">
+						<field name="info_ids">
+							<tree>
+								<field name="name"/>
+								<field name="tanggal_naskah"/>
+								<field name="partner"/>
+								<field name="deskripsi"/>
+							</tree>
+						</field>
+					</page>
+				</xpath>
+			</field>
+			
+		</record>
+
+	</data>
+</odoo>

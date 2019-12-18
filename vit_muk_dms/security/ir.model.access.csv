@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_muk_dms_file,muk_dms.file,model_muk_dms_file,,1,1,1,1
+access_muk_dms_review,muk_dms.review,model_muk_dms_review,,1,1,1,1
+access_muk_dms_reviewer,muk_dms.reviewer,model_muk_dms_reviewer,,1,1,1,1
+access_muk_dms_info,muk_dms.info,model_muk_dms_info,,1,1,1,1

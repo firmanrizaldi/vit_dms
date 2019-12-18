@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- Add you code here -->
+        
+        <record id="addDMS" model="website.menu">
+            <field name="name">DMS</field>
+			<field name="url">/vit_dms_web/index</field>
+            <field name="parent_id" ref="website.main_menu"/>
+			<field name="sequence" type="int">30</field>
+        </record>
+        
+
+    </data>
+</odoo>
