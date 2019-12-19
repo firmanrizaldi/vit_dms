@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--     
+	Copyright (C) 2017 MuK IT GmbH
+	
+    Odoo Proprietary License v1.0
+	This software and associated files (the "Software") may only be used 
+	(executed, modified, executed after modifications) if you have
+	purchased a valid license from the authors, typically via Odoo Apps,
+	or if you have received a written agreement from the authors of the
+	Software (see the COPYRIGHT file).
+	
+	You may develop Odoo modules that use the Software as a library 
+	(typically by depending on it, importing it and using its resources),
+	but without copying any source code or material from the Software.
+	You may distribute those modules under the license of your choice,
+	provided that this license is compatible with the terms of the Odoo
+	Proprietary License (For example: LGPL, MIT, or proprietary licenses
+	similar to this one).
+	
+	It is forbidden to publish, distribute, sublicense, or sell copies of
+	the Software or modified copies of the Software.
+	
+	The above copyright notice and this permission notice must be included
+	in all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+	THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+	FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+	DEALINGS IN THE SOFTWARE.
+-->
+
+<odoo>
+
+<record id="view_rest_token_tree" model="ir.ui.view">
+	<field name="name">muk_rest_token.tree</field>
+	<field name="model">muk_rest.token</field>
+	<field name="arch" type="xml">
+		<tree string="Document Settings">
+			<field name="token" />
+			<field name="lifetime"/>
+			<field name="user" />
+		</tree>
+	</field>
+</record>
+
+<record id="view_rest_token_form" model="ir.ui.view">
+	<field name="name">muk_rest_token.form</field>
+	<field name="model">muk_rest.token</field>
+	<field name="arch" type="xml">
+		<form string="Token">
+			<sheet>
+				<group>
+					<field name="token" />
+					<field name="lifetime"/>
+					<field name="user" />
+				</group>
+			</sheet>
+		</form>
+	</field>
+</record>
+
+<record id="action_rest_token" model="ir.actions.act_window">
+	<field name="name">Tokens</field>
+	<field name="res_model">muk_rest.token</field>
+	<field name="view_mode">tree,form</field>
+</record>
+
+<menuitem id="menu_rest_token" name="Token"
+	parent="cat_menu_rest" action="action_rest_token" />
+	
+</odoo>

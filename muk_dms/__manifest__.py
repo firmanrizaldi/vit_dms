@@ -25,7 +25,7 @@
     "description": """ 
         
     """,
-    "version": '10.0.1.2.1',   
+    "version": '10.0.1.2.0',   
     "category": 'Document Management',   
     "license": "AGPL-3",
     "website": "http://www.mukit.at",
@@ -35,8 +35,9 @@
         "Kerrim Abdelhamed <kerrim.adbelhamed@mukit.at>",
     ],
     "depends": [
-        "muk_web_preview",
         "muk_web_client_refresh",
+        "muk_web_view_hierarchy",
+        "muk_web_preview",
     ],
     "data": [
         "security/dms_security.xml",
